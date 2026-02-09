@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.runbad'
+version = '1.0.0'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://nexus.scarsz.me/content/groups/public/' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
+
+    // DiscordSRV
+    compileOnly 'com.discordsrv:discordsrv:1.27.0'
+
+    // VotingPlugin (local stub for compilation; real jar on server)
+    compileOnly files('libs/VotingPlugin.jar')
+
+    // PlaceholderAPI
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+
+    // Gson (bundled with Paper at runtime)
+    compileOnly 'com.google.code.gson:gson:2.10.1'
+}
+
+jar {
+    archiveFileName.set("RunbadBotBridge-${version}.jar")
+}

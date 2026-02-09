@@ -1,0 +1,78 @@
+# Dynamic Commands Configuration
+# ================================
+# Define custom slash commands that fetch PlaceholderAPI data from the bridge.
+#
+# Each command needs:
+#   name:           Slash command name (lowercase, no spaces)
+#   description:    Description shown in Discord's command picker
+#   enabled:        true/false (set to false to disable without deleting)
+#   staff_override: If true, adds a [Staff only] 'player' option to query others
+#   embed:          The embed template to display
+#
+# Embed template supports:
+#   - {{player_name}} — replaced with the player's Minecraft name
+#   - %placeholder_name% — replaced with PlaceholderAPI values from the bridge
+#
+# After adding/changing commands, run: node src/deploy-commands.js
+# to register the new slash commands with Discord.
+
+commands:
+  # Example: /mystats - Shows player statistics
+  # Uncomment and customize when you have the PlaceholderAPI expansions installed.
+  - name: mystats
+    description: View your Minecraft stats and economy balance
+    enabled: false  # Set to true when PlaceholderAPI expansions are installed
+    staff_override: true
+    embed:
+      title: "Stats for {{player_name}}"
+      description: "Here are your current server statistics."
+      color: "#5865F2"
+      # thumbnail: "https://crafatar.com/avatars/{{uuid}}?overlay=true"
+      fields:
+        - name: "💰 Balance"
+          value: "`%vault_eco_balance%`"
+          inline: true
+        - name: "⏱️ Playtime"
+          value: "`%statistic_hours_played%h`"
+          inline: true
+        - name: "👑 Rank"
+          value: "`%luckperms_primary_group_name%`"
+          inline: true
+        - name: "⚔️ Mob Kills"
+          value: "`%statistic_mob_kills%`"
+          inline: true
+        - name: "💀 Deaths"
+          value: "`%statistic_deaths%`"
+          inline: true
+        - name: "🗳️ Total Votes"
+          value: "`%VotingPlugin_total%`"
+          inline: true
+
+  # Example: /economy - Just shows balance
+  - name: economy
+    description: Check your current economy balance
+    enabled: false
+    staff_override: false
+    embed:
+      title: "Economy — {{player_name}}"
+      color: "#57F287"
+      fields:
+        - name: "Balance"
+          value: "$`%vault_eco_balance%`"
+          inline: false
+
+  # Example: /rankinfo - Shows rank details
+  - name: rankinfo
+    description: View your current rank and permissions info
+    enabled: false
+    staff_override: false
+    embed:
+      title: "Rank Info — {{player_name}}"
+      color: "#FEE75C"
+      fields:
+        - name: "Primary Group"
+          value: "`%luckperms_primary_group_name%`"
+          inline: true
+        - name: "Prefix"
+          value: "%luckperms_prefix%"
+          inline: true
