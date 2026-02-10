@@ -65,7 +65,7 @@ public class VotePluginIntegration {
 
                 // Get the time of last vote for this site
                 long lastVoteTime = vpUser.getTime(site);
-                int cooldownHours = site.getVoteDelay(); // cooldown in hours
+                int cooldownHours = (int) site.getVoteDelay(); // cooldown in hours
 
                 long cooldownMs = cooldownHours * 3600L * 1000L;
                 long nextVoteMs = lastVoteTime + cooldownMs;

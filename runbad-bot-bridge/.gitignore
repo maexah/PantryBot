@@ -1,6 +1,6 @@
 build/
 .gradle/
-libs/
 stubs/
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
+!libs/VotingPlugin.jar
