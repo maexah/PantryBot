@@ -1,0 +1,21 @@
+name: RunbadBotBridge
+version: '1.0.0'
+main: com.runbad.bridge.RunbadBotBridge
+api-version: '1.20'
+description: Secure localhost HTTP bridge for the Runbad Discord bot
+author: Runbad
+website: https://runbad.net
+depend:
+  - DiscordSRV
+softdepend:
+  - VotingPlugin
+  - PlaceholderAPI
+commands:
+  bridgestatus:
+    description: Shows RunbadBotBridge status
+    permission: runbadbridge.admin
+    usage: /bridgestatus
+permissions:
+  runbadbridge.admin:
+    description: Access to bridge admin commands
+    default: op

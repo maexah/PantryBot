@@ -1,0 +1,36 @@
+# RunbadBotBridge Configuration
+# =============================
+
+# HTTP API Settings
+api:
+  # Bind address - use 127.0.0.1 for localhost only (RECOMMENDED)
+  # Use 0.0.0.0 only if bot runs on a different machine (NOT recommended without firewall)
+  host: "127.0.0.1"
+  # Port for the HTTP API
+  port: 9585
+  # Shared secret token - MUST match the bot's BRIDGE_TOKEN env var
+  # Change this to a strong random string!
+  token: "CHANGE_ME_TO_A_RANDOM_SECRET"
+
+# Rate limiting
+rate-limit:
+  # Maximum requests per IP per minute
+  max-per-minute: 60
+  # Maximum requests per IP per second (burst)
+  max-per-second: 10
+
+# Caching
+cache:
+  # How long to cache link resolution results (seconds)
+  link-ttl: 60
+  # How long to cache vote data (seconds)
+  vote-ttl: 15
+  # How long to cache placeholder results (seconds)
+  placeholder-ttl: 10
+
+# Logging
+logging:
+  # Log all API requests to console
+  log-requests: true
+  # Log request bodies (for debugging only - may contain sensitive data)
+  log-bodies: false
