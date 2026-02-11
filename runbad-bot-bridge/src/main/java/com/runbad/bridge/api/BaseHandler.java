@@ -64,8 +64,8 @@ public abstract class BaseHandler implements HttpHandler {
             handleAuthenticated(exchange);
         } catch (IllegalArgumentException e) {
             sendError(exchange, 400, e.getMessage());
-        } catch (Exception e) {
-            plugin.getLogger().warning("[API] Error handling " + path + ": " + e.getMessage());
+        } catch (Throwable e) {
+            plugin.getLogger().warning("[API] Error handling " + path + ": " + e.getClass().getName() + ": " + e.getMessage());
             sendError(exchange, 500, "Internal server error");
         }
     }

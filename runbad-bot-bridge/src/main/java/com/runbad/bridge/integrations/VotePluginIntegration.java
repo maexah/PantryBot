@@ -99,8 +99,8 @@ public class VotePluginIntegration {
 
             voteCache.put(uuidStr, new CachedVoteData(results));
             return results;
-        } catch (Exception e) {
-            plugin.getLogger().warning("Error getting vote status for " + uuidStr + ": " + e.getMessage());
+        } catch (Throwable e) {
+            plugin.getLogger().warning("Error getting vote status for " + uuidStr + ": " + e.getClass().getName() + ": " + e.getMessage());
             return Collections.emptyList();
         }
     }
