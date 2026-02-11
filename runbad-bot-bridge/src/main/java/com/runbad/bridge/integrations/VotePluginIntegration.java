@@ -89,7 +89,7 @@ public class VotePluginIntegration {
                 String nextVoteISO = readyNow ? null :
                     Instant.ofEpochMilli(nextVoteMs).toString();
 
-                String voteUrl = site.getVoteURL();
+                String voteUrl = extractUrl(site.getVoteURL());
 
                 results.add(new VoteSiteStatus(
                     siteName, readyNow, nextVoteEpoch, nextVoteISO,
@@ -107,6 +107,26 @@ public class VotePluginIntegration {
 
     public void clearCache() {
         voteCache.clear();
+    }
+
+    /**
+     * Extract a plain URL from VotingPlugin's text component format.
+     * Input like ({Text="...",url="https://example.com/vote"}) returns https://example.com/vote
+     * If already a plain URL or null, returns as-is.
+     */
+    private static String extractUrl(String raw) {
+        if (raw == null || raw.isEmpty()) return null;
+        // Look for url="..." in the VotingPlugin text component format
+        int idx = raw.indexOf("url=\"");
+        if (idx >= 0) {
+            int start = idx + 5; // length of 'url="'
+            int end = raw.indexOf('"', start);
+            if (end > start) {
+                return raw.substring(start, end);
+            }
+        }
+        // Already a plain URL or unrecognized format
+        return raw;
     }
 
     public static class VoteSiteStatus {
