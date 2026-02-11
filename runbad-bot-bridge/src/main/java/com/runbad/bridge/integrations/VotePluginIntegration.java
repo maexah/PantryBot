@@ -3,7 +3,7 @@ package com.runbad.bridge.integrations;
 import com.runbad.bridge.RunbadBotBridge;
 import com.bencodez.votingplugin.VotingPluginMain;
 import com.bencodez.votingplugin.objects.VoteSite;
-import com.bencodez.votingplugin.users.VotingPluginUser;
+import com.bencodez.votingplugin.user.VotingPluginUser;
 import org.bukkit.Bukkit;
 
 import java.time.Instant;
