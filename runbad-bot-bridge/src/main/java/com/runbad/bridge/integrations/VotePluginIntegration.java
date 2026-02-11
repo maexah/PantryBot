@@ -53,7 +53,7 @@ public class VotePluginIntegration {
         try {
             VotingPluginMain vpMain = VotingPluginMain.getPlugin();
             UUID uuid = UUID.fromString(uuidStr);
-            VotingPluginUser vpUser = vpMain.getVotingPluginUserManager().getVotingPluginUser(uuid);
+            VotingPluginUser vpUser = vpMain.getUser(uuid);
 
             List<VoteSiteStatus> results = new ArrayList<>();
 
