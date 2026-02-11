@@ -3,7 +3,7 @@ package com.runbad.bridge.integrations;
 import com.runbad.bridge.RunbadBotBridge;
 import com.bencodez.votingplugin.VotingPluginMain;
 import com.bencodez.votingplugin.objects.VoteSite;
-import com.bencodez.votingplugin.users.VotingPluginUser;
+import com.bencodez.votingplugin.user.VotingPluginUser;
 import org.bukkit.Bukkit;
 
 import java.time.Instant;
@@ -53,7 +53,7 @@ public class VotePluginIntegration {
         try {
             VotingPluginMain vpMain = VotingPluginMain.getPlugin();
             UUID uuid = UUID.fromString(uuidStr);
-            VotingPluginUser vpUser = vpMain.getVotingPluginUserManager().getVotingPluginUser(uuid);
+            VotingPluginUser vpUser = vpMain.getUser(uuid);
 
             List<VoteSiteStatus> results = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class VotePluginIntegration {
 
                 // Get the time of last vote for this site
                 long lastVoteTime = vpUser.getTime(site);
-                int cooldownHours = site.getVoteDelay(); // cooldown in hours
+                int cooldownHours = (int) site.getVoteDelay(); // cooldown in hours
 
                 long cooldownMs = cooldownHours * 3600L * 1000L;
                 long nextVoteMs = lastVoteTime + cooldownMs;
@@ -99,8 +99,8 @@ public class VotePluginIntegration {
 
             voteCache.put(uuidStr, new CachedVoteData(results));
             return results;
-        } catch (Exception e) {
-            plugin.getLogger().warning("Error getting vote status for " + uuidStr + ": " + e.getMessage());
+        } catch (Throwable e) {
+            plugin.getLogger().warning("Error getting vote status for " + uuidStr + ": " + e.getClass().getName() + ": " + e.getMessage());
             return Collections.emptyList();
         }
     }

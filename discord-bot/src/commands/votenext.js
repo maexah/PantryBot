@@ -140,7 +140,7 @@ module.exports = {
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
-            console.error('[votenext] Vote query failed:', err.message);
+            console.error('[votenext] Vote query failed:', err.message, err.status ? `(HTTP ${err.status})` : '', err.data || '');
             await interaction.editReply({
                 embeds: [errorEmbed('Failed to fetch vote data. The Minecraft server may be offline.')],
             });
