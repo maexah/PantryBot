@@ -31,7 +31,7 @@ public class HttpApiServer {
         InetSocketAddress address = new InetSocketAddress(host, port);
         server = HttpServer.create(address, 0);
 
-        // Use a small thread pool - this is localhost-only, low traffic
+        // Use a small thread pool - low traffic API
         server.setExecutor(Executors.newFixedThreadPool(4));
 
         // Rate limiter shared across all endpoints

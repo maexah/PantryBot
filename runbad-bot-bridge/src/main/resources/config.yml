@@ -3,9 +3,10 @@
 
 # HTTP API Settings
 api:
-  # Bind address - use 127.0.0.1 for localhost only (RECOMMENDED)
-  # Use 0.0.0.0 only if bot runs on a different machine (NOT recommended without firewall)
-  host: "127.0.0.1"
+  # Bind address — 0.0.0.0 listens on all interfaces (required for split-server
+  # hosting such as Bloom.host server splits where bot and MC run in separate
+  # containers). The bearer token (api.token) protects all sensitive endpoints.
+  host: "0.0.0.0"
   # Port for the HTTP API
   port: 9585
   # Shared secret token - MUST match the bot's BRIDGE_TOKEN env var
