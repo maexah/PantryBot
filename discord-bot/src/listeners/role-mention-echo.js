@@ -1,3 +1,4 @@
+const WATCHED_CHANNEL = '1422664135484641280';
 const WATCHED_ROLES = [
     '1468415501611831408', // Rankup Ping
     '1472024933466112122', // Pop Off
@@ -24,6 +25,9 @@ function register(client) {
     client.on('messageCreate', async (message) => {
         // Only ignore our own messages (prevent reply loops)
         if (message.author.id === message.client.user.id) return;
+
+        // Only listen in the designated channel
+        if (message.channelId !== WATCHED_CHANNEL) return;
 
         // Collect role mentions from message content
         const mentionedIds = extractRoleMentions(message.content);
