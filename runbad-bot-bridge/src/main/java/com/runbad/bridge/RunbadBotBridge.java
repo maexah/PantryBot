@@ -8,6 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
 import java.util.logging.Level;
 
 public class RunbadBotBridge extends JavaPlugin {
@@ -43,6 +46,17 @@ public class RunbadBotBridge extends JavaPlugin {
             apiServer.start();
 
             getLogger().info("RunbadBotBridge API started on " + host + ":" + port);
+
+            // Log container IPs so operators can configure BRIDGE_URL on split-server setups
+            try {
+                for (NetworkInterface ni : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+                    for (InetAddress addr : Collections.list(ni.getInetAddresses())) {
+                        if (!addr.isLoopbackAddress() && addr.getAddress().length == 4) {
+                            getLogger().info("Container IP: " + addr.getHostAddress() + " (interface " + ni.getName() + ") → use http://" + addr.getHostAddress() + ":" + port + " as BRIDGE_URL");
+                        }
+                    }
+                }
+            } catch (Exception ignored) { }
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Failed to start HTTP API server", e);
             getServer().getPluginManager().disablePlugin(this);
