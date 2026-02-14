@@ -3,6 +3,7 @@ const { loadCommands } = require('./utils/command-loader');
 const { loadDynamicCommands } = require('./dynamic/dynamic-loader');
 const { initDatabase } = require('./services/database');
 const { logAudit } = require('./services/audit');
+const { register: registerRoleMentionEcho } = require('./listeners/role-mention-echo');
 const path = require('path');
 
 // Validate required env vars
@@ -15,7 +16,11 @@ for (const envVar of requiredEnvVars) {
 }
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds], // Minimal intents - slash commands only
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
 });
 
 client.commands = new Collection();
@@ -49,6 +54,9 @@ async function main() {
     } catch (err) {
         console.warn('[Bot] No dynamic commands loaded:', err.message);
     }
+
+    // Register message listeners
+    registerRoleMentionEcho(client);
 
     // Handle interactions
     client.on('interactionCreate', async (interaction) => {
@@ -96,6 +104,12 @@ async function main() {
     client.once('ready', () => {
         console.log(`[Bot] Logged in as ${client.user.tag}`);
         console.log(`[Bot] Serving ${client.commands.size} commands`);
+        console.log(`[Bot] Intents bitmask: ${client.options.intents.bitfield}`);
+    });
+
+    // Temporary debug: confirm messageCreate events are received
+    client.on('messageCreate', (msg) => {
+        console.log(`[DEBUG] messageCreate: author=${msg.author.tag} bot=${msg.author.bot} content="${msg.content.slice(0, 80)}"`);
     });
 
     await client.login(process.env.DISCORD_TOKEN);
