@@ -44,7 +44,7 @@ module.exports = {
                 await interaction.editReply({ embeds: [embed] });
             }
         } catch (err) {
-            console.error('[linkstatus] Failed:', err.message);
+            console.error('[linkstatus] Failed:', err.message, err.cause ? `(${err.cause.code || err.cause.message || err.cause})` : '');
             await interaction.editReply({
                 embeds: [errorEmbed('Failed to check link status. The Minecraft server may be offline.')],
             });

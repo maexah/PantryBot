@@ -74,7 +74,7 @@ module.exports = {
                 uuid = linkData.uuid;
                 playerName = linkData.name;
             } catch (err) {
-                console.error('[votenext] Link resolve failed:', err.message);
+                console.error('[votenext] Link resolve failed:', err.message, err.cause ? `(${err.cause.code || err.cause.message || err.cause})` : '');
                 await interaction.editReply({
                     embeds: [errorEmbed('Failed to check your account link. The Minecraft server may be offline.')],
                 });

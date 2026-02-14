@@ -3,6 +3,7 @@ const { loadCommands } = require('./utils/command-loader');
 const { loadDynamicCommands } = require('./dynamic/dynamic-loader');
 const { initDatabase } = require('./services/database');
 const { logAudit } = require('./services/audit');
+const { checkHealth } = require('./services/bridge');
 const { register: registerRoleMentionEcho } = require('./listeners/role-mention-echo');
 const path = require('path');
 
@@ -34,6 +35,16 @@ async function main() {
         console.log('[Bot] Database initialized.');
     } catch (err) {
         console.error('[Bot] Database init failed (non-fatal, continuing without DB):', err.message);
+    }
+
+    // Check bridge connectivity
+    try {
+        const health = await checkHealth();
+        console.log(`[Bot] Bridge health check OK — integrations: DiscordSRV=${health.integrations?.discordsrv}, VotingPlugin=${health.integrations?.votingplugin}, PlaceholderAPI=${health.integrations?.placeholderapi}`);
+    } catch (err) {
+        const cause = err.cause ? ` (${err.cause.code || err.cause.message || err.cause})` : '';
+        console.error(`[Bot] Bridge health check FAILED: ${err.message}${cause}`);
+        console.error('[Bot] WARNING: Bridge is unreachable at ' + (process.env.BRIDGE_URL || 'http://127.0.0.1:9585') + ' — commands that need the Minecraft server will not work.');
     }
 
     // Load static commands
