@@ -104,6 +104,12 @@ async function main() {
     client.once('ready', () => {
         console.log(`[Bot] Logged in as ${client.user.tag}`);
         console.log(`[Bot] Serving ${client.commands.size} commands`);
+        console.log(`[Bot] Intents bitmask: ${client.options.intents.bitfield}`);
+    });
+
+    // Temporary debug: confirm messageCreate events are received
+    client.on('messageCreate', (msg) => {
+        console.log(`[DEBUG] messageCreate: author=${msg.author.tag} bot=${msg.author.bot} content="${msg.content.slice(0, 80)}"`);
     });
 
     await client.login(process.env.DISCORD_TOKEN);
