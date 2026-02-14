@@ -3,6 +3,7 @@ const { loadCommands } = require('./utils/command-loader');
 const { loadDynamicCommands } = require('./dynamic/dynamic-loader');
 const { initDatabase } = require('./services/database');
 const { logAudit } = require('./services/audit');
+const { register: registerRoleMentionEcho } = require('./listeners/role-mention-echo');
 const path = require('path');
 
 // Validate required env vars
@@ -15,7 +16,11 @@ for (const envVar of requiredEnvVars) {
 }
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds], // Minimal intents - slash commands only
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
 });
 
 client.commands = new Collection();
@@ -49,6 +54,9 @@ async function main() {
     } catch (err) {
         console.warn('[Bot] No dynamic commands loaded:', err.message);
     }
+
+    // Register message listeners
+    registerRoleMentionEcho(client);
 
     // Handle interactions
     client.on('interactionCreate', async (interaction) => {
