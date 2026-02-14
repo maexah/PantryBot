@@ -9,8 +9,12 @@ const WATCHED_ROLES = [
  * the bot replies with the same role mention(s).
  */
 function register(client) {
+    console.log('[RoleMentionEcho] Listener registered.');
+
     client.on('messageCreate', async (message) => {
         if (message.author.bot) return;
+
+        console.log(`[RoleMentionEcho] Message from ${message.author.tag}: roles mentioned = ${message.mentions.roles.size}`);
 
         const mentionedIds = message.mentions.roles
             .filter((role) => WATCHED_ROLES.includes(role.id))
